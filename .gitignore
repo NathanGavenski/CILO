@@ -1,0 +1,6 @@
+# Project files
+dataset/
+logs.txt
+
+# Python files
+__pycache__/
