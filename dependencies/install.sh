@@ -6,7 +6,7 @@ sudo apt install patchelf libglew-dev libosmesa6-dev libgl1-mesa-glx libglfw3 li
 echo "\nCreating conda environment"
 conda env create -f ./dependencies/environment.yml
 eval "$(conda shell.bash hook)"
-conda activate aaai
+conda activate continuous
 
 # Installing setuptools and importlib-metadata for gym v0.21.0 
 echo "\nInstalling setuptools and importlib-metadata for gym v0.21.0"

@@ -119,7 +119,7 @@ def get_lr(optimizer):
 
 ################ Train ################
 print('Starting Train\n')
-best_epoch_acc = 0
+best_epoch_perf = 0
 early_stop_count = 0
 max_epochs = args.idm_epochs
 max_iter = len(idm_train) + len(idm_validation) + len(policy_train) + len(policy_validation)
@@ -277,8 +277,9 @@ for epoch in range(max_epochs):
         Performance_Sample=performance
     )
 
-    if performance >= 1:
-        path = f'./checkpoint/{environment["name"]}/'
+    if best_epoch_perf < performance:
+        best_epoch_perf = performance
+        path = f'/checkpoint/{environment["name"]}/'
         if not os.path.exists(path):
             os.makedirs(path)
 

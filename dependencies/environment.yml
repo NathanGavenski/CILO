@@ -1,4 +1,4 @@
-name: aaai
+name: continuous
 channels:
   - menpo
   - conda-forge

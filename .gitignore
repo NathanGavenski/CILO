@@ -4,3 +4,5 @@ logs.txt
 
 # Python files
 __pycache__/
+
+*.pt
