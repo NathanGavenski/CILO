@@ -93,11 +93,11 @@ print('\nCreating Optimizer and Loss')
 print(f'IDM learning rate: {args.lr}\nPolicy learning rate: {args.policy_lr}')
 idm_lr = args.lr
 idm_criterion = nn.L1Loss()
-idm_optimizer = optim.Adam(idm_model.parameters(), lr=idm_lr, weight_decay=1e-2)
+idm_optimizer = optim.Adam(idm_model.parameters(), lr=idm_lr)
 
 policy_lr = args.policy_lr
 policy_criterion = nn.L1Loss()
-policy_optimizer = optim.Adam(policy_model.parameters(), lr=policy_lr, weight_decay=1e-2)
+policy_optimizer = optim.Adam(policy_model.parameters(), lr=policy_lr)
 
 disc_lr = 1e-3
 disc_criterion = nn.CrossEntropyLoss()

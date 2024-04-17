@@ -11,11 +11,11 @@ clear && python train_cilo.py \
 \
 --lr 1e-3 \
 --lr_decay_rate 1 \
---batch_size 1024 \
+--batch_size 2048 \
 --idm_epochs 1000 \
 \
 --policy_lr 1e-3 \
 --policy_lr_decay_rate 1 \
---policy_batch_size 1024 \
+--policy_batch_size 2048 \
 \
 --verbose
