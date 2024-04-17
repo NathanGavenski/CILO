@@ -42,6 +42,7 @@ def play(
         s = s.to(device)
 
         action = model.act(s)
+        action = np.clip(action, -1, 1)
 
         next_state, reward, done, _ = env.step(action)
         total_reward += reward

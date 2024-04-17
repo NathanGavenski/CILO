@@ -1,5 +1,7 @@
 clear && python train_cilo.py \
 --gpu $1 \
+--pretrained \
+--pretrain_path ./checkpoint/Cheetah_train/cheetah/ \
 --encoder vector \
 --env_name cheetah \
 --run_name Cheetah_train \

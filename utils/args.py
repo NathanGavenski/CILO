@@ -30,6 +30,7 @@ parser.add_argument('--run_name', type=str, default=None, help='Name of the fold
 
 # Models
 parser.add_argument('--pretrained', action='store_true', help='Whether or not models should be pretrained')
+parser.add_argument('--pretrain_path', type=str)
 
 # IDM
 parser.add_argument('--batch_size', type=int, default=128, help='Batch size')

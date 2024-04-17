@@ -1,10 +1,10 @@
 # Args should be imported before everything to cover https://discuss.pytorch.org/t/cuda-visible-device-is-of-no-use/10018
-import mujoco_py
 from utils.args import args
 import numpy as np
 import os
 import torch
 
+import mujoco_py
 from progress.bar import Bar
 from torch import nn, optim
 
@@ -35,12 +35,12 @@ rest_char = environment['name'][1:]
 env_name = f'{st_char}{rest_char}'
 
 name = f'./checkpoint/alpha/{env_name}/{parent_folder}/{args.run_name}'
-if os.path.exists(name) is False:
+if not os.path.exists(name):
     os.makedirs(name)
 
 parent_folder = "_".join(args.run_name.split('_')[:-1])
 path = f'./runs/alpha/{env_name}/{parent_folder}/{args.run_name}'
-if os.path.exists(path) is False:
+if not os.path.exists(path):
     os.makedirs(path)
 
 board = Board(name, path)
@@ -50,7 +50,7 @@ print('\nCreating PyTorch IDM Datasets')
 print(f'Using dataset: {args.data_path} with batch size: {args.batch_size}')
 get_idm_dataset = environment['idm_dataset']
 idm_train, idm_validation = get_idm_dataset(
-    args.data_path,
+    args.data_path if not args.pretrained else f"{args.alpha}{args.env_name}.npz",
     args.batch_size
 )
 print(f'IDM Train dataset length: {idm_train.dataset.states.shape[0]}')
@@ -82,18 +82,24 @@ policy_model.to(device)
 idm_model.to(device)
 discriminator_model.to(device)
 
+if args.pretrained:
+    path = args.pretrain_path
+    idm_model.load_state_dict(torch.load(f"{path}best_idm.pt"))
+    policy_model.load_state_dict(torch.load(f"{path}best_policy.pt"))
+    discriminator_model.load_state_dict(torch.load(f"{path}best_disc.pt"))
+
 ################ Optimizer and loss ################
 print('\nCreating Optimizer and Loss')
 print(f'IDM learning rate: {args.lr}\nPolicy learning rate: {args.policy_lr}')
 idm_lr = args.lr
 idm_criterion = nn.L1Loss()
-idm_optimizer = optim.Adam(idm_model.parameters(), lr=idm_lr) #, weight_decay=1e-2)
+idm_optimizer = optim.Adam(idm_model.parameters(), lr=idm_lr, weight_decay=1e-2)
 
 policy_lr = args.policy_lr
 policy_criterion = nn.L1Loss()
-policy_optimizer = optim.Adam(policy_model.parameters(), lr=policy_lr) # , weight_decay=1e-2)
+policy_optimizer = optim.Adam(policy_model.parameters(), lr=policy_lr, weight_decay=1e-2)
 
-disc_lr = 5e-3
+disc_lr = 1e-3
 disc_criterion = nn.CrossEntropyLoss()
 disc_optimizer = optim.Adam(discriminator_model.parameters(), lr=disc_lr)
 
@@ -162,13 +168,11 @@ for epoch in range(max_epochs):
     exploration = batch_acc.mean(dim=0)
 
     # IDM Validation
-    #batch_loss = []
     batch_acc = torch.Tensor(size=(0, action_dimension))
     for itr, mini_batch in enumerate(idm_validation):
         with torch.no_grad():
             _, acc = validate_idm(idm_model, mini_batch, device, board)
         batch_acc = torch.cat((batch_acc, acc[None].cpu()), dim=0)
-        #batch_loss.append(loss)
 
         if args.verbose is True:
             bar.next()
@@ -217,10 +221,7 @@ for epoch in range(max_epochs):
             **{f'Policy_Acc_action_{i}': acc, f'IDM_GT_Error_Action_{i}': idm_acc},
         )
 
-    board.add_scalars(
-        train=True,
-        Policy_Loss=np.mean(batch_loss),
-    )
+    board.add_scalars(train=True, Policy_Loss=np.mean(batch_loss))
     board.add_scalar('Policy Learning Rate', get_lr(policy_optimizer))
 
     # Policy Validation
@@ -279,13 +280,13 @@ for epoch in range(max_epochs):
 
     if best_epoch_perf < performance:
         best_epoch_perf = performance
-        path = f'/checkpoint/{environment["name"]}/'
+        path = f'./checkpoint/{args.run_name}/{environment["name"]}/'
         if not os.path.exists(path):
             os.makedirs(path)
 
-        torch.save(idm_model.state_dict(), f'{path}{epoch}_idm.pt')
-        torch.save(policy_model.state_dict(), f'{path}{epoch}_policy.pt')
-        torch.save(discriminator_model.state_dict(), f'{path}{epoch}_disc.pt')
+        torch.save(idm_model.state_dict(), f'{path}best_idm.pt')
+        torch.save(policy_model.state_dict(), f'{path}best_policy.pt')
+        torch.save(discriminator_model.state_dict(), f'{path}best_disc.pt')
 
     print(f'\nSample Infer - AER: {round(infer, 4)} Performance: {round(performance, 4)}')
 
