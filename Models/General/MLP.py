@@ -16,7 +16,7 @@ class MLP(nn.Module):
         self.fc = nn.Linear((out), (out))
         self.fc2 = nn.Linear((out), (out))
         self.output = nn.Linear((out), out_dim)
-        self.dropout = nn.Dropout(p=0.9, inplace=False)
+        self.dropout = nn.Dropout(p=0.5, inplace=False)
 
         self.relu = nn.LeakyReLU()
 
@@ -37,21 +37,21 @@ class MlpWithAttention(nn.Module):
 
         out = max(512, in_dim * 2)
         self.input = nn.Linear(in_dim, out)
-        
+
         self.fc = nn.Linear(out, out)
         self.attention = Self_Attn1D(out, nn.LeakyReLU)
-        
+
         self.fc2 = nn.Linear(out, out)
         self.attention2 = Self_Attn1D(out, nn.LeakyReLU)
-        
-        self.fc3 = nn.Linear(out, out)        
-        self.fc4 = nn.Linear(out, out)        
+
+        self.fc3 = nn.Linear(out, out)
+        self.fc4 = nn.Linear(out, out)
         self.output = nn.Linear(out, out_dim)
         self.relu = nn.Tanh()
 
     def forward(self, x):
         x = x.float()
- 
+
         x = self.input(x)
         x = self.relu(x)
 
@@ -62,10 +62,10 @@ class MlpWithAttention(nn.Module):
         x = self.fc2(x)
         x = self.relu(x)
         x, _ = self.attention2(x)
-        
+
         x = self.fc3(x)
         x = self.relu(x)
-        
+
         x = self.fc4(x)
         x = self.relu(x)
 

@@ -83,7 +83,7 @@ class Self_Attn1D(nn.Module):
 
         self.softmax = nn.Softmax(dim=-1)
 
-    def forward(self, x, return_attn=False):
+    def forward(self, x):
         """
             inputs :
                 x : input feature maps(B X C X T)
