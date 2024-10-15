@@ -92,3 +92,15 @@ For simplicity, we provide a script for each environment with all hyperparameter
 bash ./scripts/cilo/cilo_ant.sh -1 experiment1
 ```
 where the first argument is the gpu number and the second is the experiment name.
+
+### Ciation
+```latex
+@incollection{gavenski2024explorative,
+	title={Explorative Imitation Learning: A Path Signature Approach for Continuous Environments},
+	author={Gavenski, Nathan and Monteiro, Juarez and Meneguzzi, Felipe and Luck, Michael and Rodrigues, Odinaldo},
+	booktitle={ECAI 2024},
+	pages={}
+	year={2024},
+	publisher={IOS Press}
+}
+```
