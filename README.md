@@ -1,5 +1,5 @@
 # Continuous Imitation Learning from Observation (CILO)
-Pytorch official implementation for Continuous Imitation Learning from Observation
+Pytorch official implementation for Continuous Imitation Learning from Observation from [Explorative Imitation Learning: A Path Signature Approach for Continuous Environments](https://kclpure.kcl.ac.uk/portal/en/publications/explorative-imitation-learning-a-path-signature-approach-for-cont) (ECAI).
 
 ## Requirements
 ```
