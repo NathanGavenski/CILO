@@ -48,6 +48,16 @@ To create expert samples for **all** environments:
 bash ./scripts/create_experts.sh
 ```
 
+### Using samples from paper:
+If you want to use the same datasets from the paper they are all publicly available via [IL-Datasets](https://github.com/NathanGavenski/IL-Datasets).
+All datasets are listed on [HuggingFace](https://huggingface.co/collections/NathanGavenski/cilo-datasets-670e862c84a8c371ccb6ce2d) and can be downloaded using BaselineDataset from IL-Datasets.
+To use the dataset:
+
+```python
+from imitation_datasets.dataset import BaselineDataset
+
+dataset = BaselineDataset("NathanGavenski/Ant-v2", source="huggingface")
+```
 
 ### Running CILO
 
