@@ -99,7 +99,7 @@ where the first argument is the gpu number and the second is the experiment name
 	title={Explorative Imitation Learning: A Path Signature Approach for Continuous Environments},
 	author={Gavenski, Nathan and Monteiro, Juarez and Meneguzzi, Felipe and Luck, Michael and Rodrigues, Odinaldo},
 	booktitle={ECAI 2024},
-	pages={}
+	pages={1551-1558}
 	year={2024},
 	publisher={IOS Press}
 }
