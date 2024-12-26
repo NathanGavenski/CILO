@@ -229,7 +229,6 @@ def get_policy_vector_dataset(
     valid=False,
     **kwargs
 ):
-    # TODO criar aqui uma forma de executar validação, separar por trajetórias?
     trajectories = np.load(path, allow_pickle=True)
     
     if valid:
